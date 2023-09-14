@@ -109,16 +109,47 @@ namespace ProductManager_2023
                 Console.WriteLine($"Beskrivning: {product.Description}");
                 Console.WriteLine($"Bild (URL): {product.ImageUrl}");
                 Console.WriteLine($"Pris: {product.Price} SEK");
+                Console.ReadKey();
+
+            }
+            else
+            {
+                Console.WriteLine("Ingen produkt med den SKU:n eller namnet hittades.");
+                Console.WriteLine("\nTryck på en tangent för att återgå till huvudmenyn.");
+                Console.ReadKey();
+            }
+
+
+        }
+
+
+        private static void DeleteProduct()
+        {
+            Console.WriteLine("Ange SKU eller produktens namn du vill ta bort:");
+            var searchTerm = Console.ReadLine();
+
+            var productToDelete = DbContext.Products.FirstOrDefault(p => p.SKU == searchTerm || p.Name.Contains(searchTerm));
+
+            if (productToDelete != null)
+            {
+                Console.WriteLine($"Produkt hittades: {productToDelete.Name} (SKU: {productToDelete.SKU}). Vill du verkligen ta bort den? (Y/N)");
+                var confirmation = Console.ReadLine().ToUpper();
+
+                if (confirmation == "Y")
+                {
+                    DbContext.Products.Remove(productToDelete);
+                    DbContext.SaveChanges();
+                    Console.WriteLine("Produkten har tagits bort.");
+                }
+                else
+                {
+                    Console.WriteLine("Produkten togs inte bort.");
+                }
             }
             else
             {
                 Console.WriteLine("Ingen produkt med den SKU:n eller namnet hittades.");
             }
-
-        }
-
-        private static void DeleteProduct()
-        {
         }
 
         private static void ExitProgram()
