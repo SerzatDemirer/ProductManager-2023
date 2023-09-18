@@ -1,4 +1,4 @@
-﻿using System;
+﻿using static System.Console;
 using Microsoft.EntityFrameworkCore;
 
 namespace ProductManager_2023
@@ -7,13 +7,12 @@ namespace ProductManager_2023
     {
         static FashionDbContext DbContext = new FashionDbContext();
 
-
         static void Main(string[] args)
         {
             while (true)
             {
                 ShowMainMenu();
-                var choice = Console.ReadLine();
+                var choice = ReadLine();
 
                 switch (choice)
                 {
@@ -30,47 +29,53 @@ namespace ProductManager_2023
                         ExitProgram();
                         return;  // Avslutar program
                     default:
-                        Console.WriteLine("Ogiltigt val, försök igen.");
+                        WriteLine("Ogiltigt val, försök igen.");
                         break;
                 }
             }
         }
 
+        private static void ClearScreenWithColors(ConsoleColor textColor)
+        {
+            Clear();
+            ForegroundColor = textColor;
+        }
 
         private static void ShowMainMenu()
         {
-            Console.Clear();
-            Console.WriteLine("********** Product Manager **********");
-            Console.WriteLine("1. Lägg till ny produkt");
-            Console.WriteLine("2. Sök efter produkt");
-            Console.WriteLine("3. Radera produkt");
-            Console.WriteLine("4. Avsluta programmet");
-            Console.WriteLine("Välj ett alternativ genom att ange siffran:");
-        }
+            Clear();
+            ClearScreenWithColors(ConsoleColor.DarkYellow);
 
+            WriteLine("\n********** Product Manager ***************************");
+            WriteLine("\n1. Lägg till ny produkt");
+            WriteLine("2. Sök efter produkt");
+            WriteLine("3. Radera produkt");
+            WriteLine("4. Avsluta programmet");
+            WriteLine("\nVälj ett alternativ genom att ange siffran:");
+        }
 
         static void AddProduct()
         {
-            Console.Clear();
-            Console.WriteLine("Lägg till ny produkt");
+            Clear();
+            WriteLine("Lägg till ny produkt");
 
-            Console.WriteLine("\nNamn:");
-            var name = Console.ReadLine();
+            WriteLine("\nNamn:");
+            var name = ReadLine();
 
-            Console.WriteLine("SKU:");
-            var sku = Console.ReadLine();
+            WriteLine("SKU:");
+            var sku = ReadLine();
 
-            Console.WriteLine("Beskrivning:");
-            var description = Console.ReadLine();
+            WriteLine("Beskrivning:");
+            var description = ReadLine();
 
-            Console.WriteLine("Bild (URL):");
-            var imageUrl = Console.ReadLine();
+            WriteLine("Bild (URL):");
+            var imageUrl = ReadLine();
 
-            Console.WriteLine("Pris:");
+            WriteLine("Pris:");
             decimal price;
-            while (!decimal.TryParse(Console.ReadLine(), out price) || price < 0)
+            while (!decimal.TryParse(ReadLine(), out price) || price < 0)
             {
-                Console.WriteLine("Ogiltigt pris. Ange ett giltigt pris:");
+                WriteLine("Ogiltigt pris. Ange ett giltigt pris:");
             }
 
             var product = new Product
@@ -84,81 +89,99 @@ namespace ProductManager_2023
 
             try
             {
+                WriteLine("\nProdukt sparad!");
+                Thread.Sleep(2000);
                 DbContext.Products.Add(product);
                 DbContext.SaveChanges();
-                Console.WriteLine("\nProdukt sparad!");
+
+
             }
             catch (Exception e)
             {
-                Console.WriteLine("Ett fel inträffade när produkten skulle sparas. Detaljer: " + e.Message);
+                WriteLine("Ett fel inträffade när produkten skulle sparas. Detaljer: " + e.Message);
             }
         }
-
 
         private static void SearchProduct()
         {
-            Console.WriteLine("Ange SKU eller produktens namn för att söka:");
-            var searchTerm = Console.ReadLine();
+            Clear();
 
-            var product = DbContext.Products.FirstOrDefault(p => p.SKU == searchTerm || p.Name.Contains(searchTerm));
+            WriteLine("Ange SKU eller produktens namn för att söka:");
+            string searchTerm = ReadLine() ?? string.Empty;
+
+            // Söker baserat på SKU eller produktens namn
+            var product = DbContext.Products.FirstOrDefault(p => p.SKU == searchTerm || (p.Name != null && p.Name.Contains(searchTerm)));
 
             if (product != null)
             {
-                Console.WriteLine($"Namn: {product.Name}");
-                Console.WriteLine($"SKU: {product.SKU}");
-                Console.WriteLine($"Beskrivning: {product.Description}");
-                Console.WriteLine($"Bild (URL): {product.ImageUrl}");
-                Console.WriteLine($"Pris: {product.Price} SEK");
-                Console.ReadKey();
-
+                WriteLine($"\nNamn: {product.Name}");
+                WriteLine($"SKU: {product.SKU}");
+                WriteLine($"Beskrivning: {product.Description}");
+                WriteLine($"Bild (URL): {product.ImageUrl}");
+                WriteLine($"Pris: {product.Price} SEK");
+                ReadKey();
             }
             else
             {
-                Console.WriteLine("Ingen produkt med den SKU:n eller namnet hittades.");
-                Console.WriteLine("\nTryck på en tangent för att återgå till huvudmenyn.");
-                Console.ReadKey();
+                WriteLine("\nIngen produkt med den SKU:n eller namnet hittades.");
+                WriteLine("\nTryck på en tangent för att återgå till huvudmenyn.");
+                ReadKey();
+                Thread.Sleep(3000);
             }
-
-
         }
-
 
         private static void DeleteProduct()
         {
-            Console.WriteLine("Ange SKU eller produktens namn du vill ta bort:");
-            var searchTerm = Console.ReadLine();
+            Clear();
+            WriteLine("Ange SKU eller produktens namn du vill ta bort:");
+            var searchTerm = ReadLine() ?? string.Empty;
 
-            var productToDelete = DbContext.Products.FirstOrDefault(p => p.SKU == searchTerm || p.Name.Contains(searchTerm));
+            var productToDelete = DbContext.Products.FirstOrDefault(p => p.SKU == searchTerm || p.Name != null && p.Name.Contains(searchTerm));
 
             if (productToDelete != null)
             {
-                Console.WriteLine($"Produkt hittades: {productToDelete.Name} (SKU: {productToDelete.SKU}). Vill du verkligen ta bort den? (Y/N)");
-                var confirmation = Console.ReadLine().ToUpper();
+                WriteLine($"Produkt hittades: {productToDelete.Name} (SKU: {productToDelete.SKU}). Vill du verkligen ta bort den? (J/N)");
+                var confirmation = ReadLine() ?? string.Empty.ToUpper();
 
-                if (confirmation == "Y")
+                if (confirmation == "J")
                 {
+                    Clear();
+                    ShowProgressBar();
+                    WriteLine("\n\nProdukten raderat!");
+                    Thread.Sleep(3000);
                     DbContext.Products.Remove(productToDelete);
                     DbContext.SaveChanges();
-                    Console.WriteLine("Produkten har tagits bort.");
                 }
                 else
                 {
-                    Console.WriteLine("Produkten togs inte bort.");
+                    WriteLine("Produkten togs inte bort.");
                 }
             }
             else
             {
-                Console.WriteLine("Ingen produkt med den SKU:n eller namnet hittades.");
+                WriteLine("Ingen produkt med den SKU:n eller namnet hittades.");
+            }
+        }
+
+        private static void ShowProgressBar(int delayMilliseconds = 25)
+        {
+            WriteLine("Tar bort produkt...");
+            for (int i = 0; i <= 100; i++)
+            {
+                Write($"\r[{new string('=', i)}{new string(' ', 100 - i)}] {i}%");
+                System.Threading.Thread.Sleep(delayMilliseconds);
             }
         }
 
         private static void ExitProgram()
         {
-            Console.WriteLine("Tack för att du använde Product Manager!");
-            Console.WriteLine("Programmet avslutas nu...");
+            WriteLine("Tack för att du använde Product Manager!");
+            WriteLine("Programmet avslutas nu...");
             System.Threading.Thread.Sleep(2000);
         }
+
     }
+     
 }
 
 
