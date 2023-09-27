@@ -1,27 +1,24 @@
 ﻿<Properties StartupConfiguration="{A5BC2065-ADD8-4E3E-B373-71907B9FE21B}|Default">
-  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.ItemProperties.ProductManager-2023 PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MultiItemStartupConfigurations />
   <MonoDevelop.Ide.Workbench ActiveDocument="Program.cs">
     <Files>
-      <File FileName="Program.cs" Line="180" Column="62" />
-      <File FileName="Product.cs" Line="1" Column="1" />
-      <File FileName="FashionDbContext.cs" Line="1" Column="1" />
+      <File FileName="Program.cs" Line="2" Column="1" />
+      <File FileName="Product.cs" />
+      <File FileName="FashionDbContext.cs" />
+      <File FileName="Migrations/20230913212130_InitialMigration.cs" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
-          <Node name="ProductManager-2023">
-            <Node name="ProductManager-2023">
-              <Node name="Program.cs" selected="True" />
-            </Node>
-          </Node>
+          <Node name="ProductManager-2023" selected="True" />
         </State>
       </Pad>
     </Pads>
   </MonoDevelop.Ide.Workbench>
-  <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore />
-  </MonoDevelop.Ide.DebuggingService.Breakpoints>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.ItemProperties.ProductManager-2023 PreferredExecutionTarget="MonoDevelop.Default" />
-  <MultiItemStartupConfigurations />
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
 </Properties>

@@ -9,7 +9,6 @@ namespace ProductManager_2023
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer(@"Server=localhost;Database=ProductManager-2023;User Id=sa;Password=Password123;Encrypt=False;");
-           
         }
     }
 }

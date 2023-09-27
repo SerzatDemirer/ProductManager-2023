@@ -1,4 +1,5 @@
-﻿
+﻿using System;
+
 namespace ProductManager_2023
 {
     public class Product
@@ -9,6 +10,5 @@ namespace ProductManager_2023
         public string? Description { get; set; }
         public string? ImageUrl { get; set; }
         public decimal Price { get; set; }
-
     }
 }
