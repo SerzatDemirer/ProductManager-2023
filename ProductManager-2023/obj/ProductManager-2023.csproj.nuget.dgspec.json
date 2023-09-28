@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/Users/mac/Desktop/WORKSPACE-EC/6-Backend-1/ProjectsVS/ProductManager-2023/ProductManager-2023/ProductManager-2023.csproj": {}
+    "/Users/mac/Desktop/WORKSPACE-EC/6-Backend-1/Projekt-Uppgift/ProductManager-2023/ProductManager-2023/ProductManager-2023.csproj": {}
   },
   "projects": {
-    "/Users/mac/Desktop/WORKSPACE-EC/6-Backend-1/ProjectsVS/ProductManager-2023/ProductManager-2023/ProductManager-2023.csproj": {
+    "/Users/mac/Desktop/WORKSPACE-EC/6-Backend-1/Projekt-Uppgift/ProductManager-2023/ProductManager-2023/ProductManager-2023.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/mac/Desktop/WORKSPACE-EC/6-Backend-1/ProjectsVS/ProductManager-2023/ProductManager-2023/ProductManager-2023.csproj",
+        "projectUniqueName": "/Users/mac/Desktop/WORKSPACE-EC/6-Backend-1/Projekt-Uppgift/ProductManager-2023/ProductManager-2023/ProductManager-2023.csproj",
         "projectName": "ProductManager-2023",
-        "projectPath": "/Users/mac/Desktop/WORKSPACE-EC/6-Backend-1/ProjectsVS/ProductManager-2023/ProductManager-2023/ProductManager-2023.csproj",
+        "projectPath": "/Users/mac/Desktop/WORKSPACE-EC/6-Backend-1/Projekt-Uppgift/ProductManager-2023/ProductManager-2023/ProductManager-2023.csproj",
         "packagesPath": "/Users/mac/.nuget/packages/",
-        "outputPath": "/Users/mac/Desktop/WORKSPACE-EC/6-Backend-1/ProjectsVS/ProductManager-2023/ProductManager-2023/obj/",
+        "outputPath": "/Users/mac/Desktop/WORKSPACE-EC/6-Backend-1/Projekt-Uppgift/ProductManager-2023/ProductManager-2023/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/Users/mac/.nuget/NuGet/NuGet.Config"

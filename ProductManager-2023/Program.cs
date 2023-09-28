@@ -1,5 +1,4 @@
-﻿using System.Text;
-using static System.Console;
+﻿using static System.Console;
 
 namespace ProductManager_2023
 {
@@ -11,9 +10,7 @@ namespace ProductManager_2023
         {
             while (true)
             {
-                CursorVisible = false;
                 ShowMainMenu();
-                CursorVisible = true;
                 var choice = ReadLine();
 
                 switch (choice)
@@ -56,82 +53,72 @@ namespace ProductManager_2023
 
         static void AddProduct()
         {
-            Clear();
-            WriteLine("Lägg till ny produkt");
-            WriteLine("(Tryck ESC när som helst för att avbryta och återvända till huvudmenyn)\n");
-
-            WriteLine("\nNamn:");
-            var name = SimpleReadInput();
-            if (string.IsNullOrEmpty(name)) return;
-
-            WriteLine("SKU:");
-            var sku = SimpleReadInput();
-            if (string.IsNullOrEmpty(sku)) return;
-
-            WriteLine("Beskrivning:");
-            var description = SimpleReadInput();
-            if (string.IsNullOrEmpty(description)) return;
-
-            WriteLine("Bild (URL):");
-            var imageUrl = SimpleReadInput();
-            if (string.IsNullOrEmpty(imageUrl)) return;
-
-            WriteLine("Pris:");
-            decimal price;
-            var priceInput = SimpleReadInput();
-            while (!decimal.TryParse(priceInput, out price) || price < 0)
+            while (true) // Loopar tills användaren bekräftar att inmatad information är korrekt.
             {
-                WriteLine("Ogiltigt pris. Ange ett giltigt pris:");
-                priceInput = SimpleReadInput();
-                if (string.IsNullOrEmpty(priceInput)) return;
-            }
+                Clear();
+                WriteLine("ADD: Lägg till produkt\n");
 
-            var product = new Product
-            {
-                Name = name,
-                SKU = sku,
-                Description = description,
-                ImageUrl = imageUrl,
-                Price = price
-            };
+                // Hämta in information från användaren för varje fält.
+                WriteLine("Namn: ");
+                var name = ReadLine();
 
-            try
-            {
-                WriteLine("\nProdukt sparad!");
-                Thread.Sleep(2000);
-                DbContext.Products.Add(product);
-                DbContext.SaveChanges();
-            }
-            catch (Exception e)
-            {
-                WriteLine("Ett fel inträffade när produkten skulle sparas. Detaljer: " + e.Message);
-            }
-        }
+                WriteLine("SKU: ");
+                var sku = ReadLine();
 
-        private static string? SimpleReadInput()
-        {
-            StringBuilder input = new StringBuilder();
-            while (true)
-            {
-                ConsoleKeyInfo keyInfo = ReadKey(intercept: true);
+                WriteLine("Beskrivning: ");
+                var description = ReadLine();
 
-                // If Enter, end the input.
-                if (keyInfo.Key == ConsoleKey.Enter)
+                WriteLine("Bild (URL): ");
+                var imageUrl = ReadLine();
+
+                decimal price;
+                while (true)
                 {
-                    WriteLine(); 
-                    return input.ToString();
+                    WriteLine("Pris: ");
+                    var priceInput = ReadLine();
+                    if (decimal.TryParse(priceInput, out price) && price >= 0)
+                        break;
+
+                    WriteLine("Ogiltigt pris. Ange ett giltigt pris.");
                 }
 
-                // If Escape, clear the input and return to main menu.
-                if (keyInfo.Key == ConsoleKey.Escape)
-                {
-                    Clear();
-                    return null;
-                }
+                // Visa inmatad information för bekräftelse.
+                Clear();
+                WriteLine($"Namn: {name}");
+                WriteLine($"SKU: {sku}");
+                WriteLine($"Beskrivning: {description}");
+                WriteLine($"Bild (URL): {imageUrl}");
+                WriteLine($"Pris: {price} SEK");
+                WriteLine("\nÄr detta korrekt? (J)a (N)ej");
 
-                // Append the character to the input.
-                input.Append(keyInfo.KeyChar);
-                Write(keyInfo.KeyChar); // Write the character to the console.
+                var confirmation = ReadKey(intercept: true).KeyChar;
+
+                if (confirmation == 'j' || confirmation == 'J')
+                {
+                    var product = new Product
+                    {
+                        Name = name,
+                        SKU = sku,
+                        Description = description,
+                        ImageUrl = imageUrl,
+                        Price = price
+                    };
+
+                    try
+                    {
+                        DbContext.Products.Add(product);
+                        DbContext.SaveChanges();
+                        Clear();
+                        WriteLine("Produkt sparad!");
+                        Thread.Sleep(2000);
+                        return;
+                    }
+                    catch (Exception e)
+                    {
+                        WriteLine("Ett fel inträffade när produkten skulle sparas. Detaljer: " + e.Message);
+                        Thread.Sleep(2000);
+                    }
+                }
             }
         }
 
