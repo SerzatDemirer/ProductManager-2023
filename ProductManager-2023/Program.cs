@@ -1,7 +1,5 @@
-﻿using static System.Console;
-using System.Linq;
-using System.Threading;
-using System;
+﻿using System.Text;
+using static System.Console;
 
 namespace ProductManager_2023
 {
@@ -11,11 +9,9 @@ namespace ProductManager_2023
 
         static void Main(string[] args)
         {
-
             while (true)
             {
                 CursorVisible = false;
-
                 ShowMainMenu();
                 CursorVisible = true;
                 var choice = ReadLine();
@@ -30,10 +26,10 @@ namespace ProductManager_2023
                         break;
                     case "3":
                         ExitProgram();
-                        return;  // Avslutar program
+                        return;  // Avslutar programmet
                     default:
                         WriteLine("Ogiltigt val, försök igen.");
-                        Thread.Sleep(2000); // Pausa i 2 sekunder
+                        Thread.Sleep(2000); // Pausar programmet i 2 sekunder
                         break;
                 }
             }
@@ -65,28 +61,28 @@ namespace ProductManager_2023
             WriteLine("(Tryck ESC när som helst för att avbryta och återvända till huvudmenyn)\n");
 
             WriteLine("\nNamn:");
-            var name = ReadInput();
+            var name = SimpleReadInput();
             if (string.IsNullOrEmpty(name)) return;
 
             WriteLine("SKU:");
-            var sku = ReadInput();
+            var sku = SimpleReadInput();
             if (string.IsNullOrEmpty(sku)) return;
 
             WriteLine("Beskrivning:");
-            var description = ReadInput();
+            var description = SimpleReadInput();
             if (string.IsNullOrEmpty(description)) return;
 
             WriteLine("Bild (URL):");
-            var imageUrl = ReadInput();
+            var imageUrl = SimpleReadInput();
             if (string.IsNullOrEmpty(imageUrl)) return;
 
             WriteLine("Pris:");
             decimal price;
-            var priceInput = ReadInput();
+            var priceInput = SimpleReadInput();
             while (!decimal.TryParse(priceInput, out price) || price < 0)
             {
                 WriteLine("Ogiltigt pris. Ange ett giltigt pris:");
-                priceInput = ReadInput();
+                priceInput = SimpleReadInput();
                 if (string.IsNullOrEmpty(priceInput)) return;
             }
 
@@ -112,13 +108,33 @@ namespace ProductManager_2023
             }
         }
 
-        private static string? ReadInput()
+        private static string? SimpleReadInput()
         {
-            ConsoleKeyInfo keyInfo = ReadKey(intercept: true);
-            if (keyInfo.Key == ConsoleKey.Escape) return null;
+            StringBuilder input = new StringBuilder();
+            while (true)
+            {
+                ConsoleKeyInfo keyInfo = ReadKey(intercept: true);
 
-            return ReadLine();
+                // If Enter, end the input.
+                if (keyInfo.Key == ConsoleKey.Enter)
+                {
+                    WriteLine(); 
+                    return input.ToString();
+                }
+
+                // If Escape, clear the input and return to main menu.
+                if (keyInfo.Key == ConsoleKey.Escape)
+                {
+                    Clear();
+                    return null;
+                }
+
+                // Append the character to the input.
+                input.Append(keyInfo.KeyChar);
+                Write(keyInfo.KeyChar); // Write the character to the console.
+            }
         }
+
 
 
         private static void SearchProduct()
@@ -149,7 +165,7 @@ namespace ProductManager_2023
         private static void DisplayProductDetails(Product product)
         {
             Clear();
-            
+
             WriteLine($"\nNamn: {product.Name}");
             WriteLine($"SKU: {product.SKU}");
             WriteLine($"Beskrivning: {product.Description}");
@@ -165,14 +181,12 @@ namespace ProductManager_2023
             }
             else if (keyInfo.Key == ConsoleKey.Escape)
             {
-                return; // Återvänder till huvudmenyn
+                return;
             }
             else
             {
-                DisplayProductDetails(product); // Om någon annan tangent än R eller ESC trycks, visa detaljerna igen.
+                DisplayProductDetails(product);
             }
-
-
         }
 
         private static void DeleteProduct(Product productToDelete)
@@ -209,6 +223,7 @@ namespace ProductManager_2023
 
         private static void ExitProgram()
         {
+            Clear();
             WriteLine("Tack för att du använde Product Manager!");
             WriteLine("Programmet avslutas nu...");
             Thread.Sleep(2000);
